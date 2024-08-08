@@ -5,6 +5,29 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bd79fd07b2b979311bc4fc2c5b007827"
     tools:context=".GetCoordinatActivity">
+
+    <Button
+        android:id="@+id/button_get_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Konum Bilgilerini Al"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Konum bilgisi alınıyor..."
+        app:layout_constraintTop_toBottomOf="@+id/button_get_location"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
