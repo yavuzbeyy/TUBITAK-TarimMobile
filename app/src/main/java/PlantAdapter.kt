@@ -14,8 +14,16 @@ import kotlin.concurrent.thread
 
 data class Plant(
     val name: String,
-    val photoKey: String,
-    val description: String
+    val photoKey: String?,
+    val description: String,
+    val iklimAdi: String,
+    val iklimAciklama: String,
+    val toprakAdi: String,
+    val toprakAciklama: String,
+    val sulamaAdi: String,
+    val sulamaAciklama: String,
+    val gubrelemeAdi: String,
+    val gubrelemeAciklama: String
 ) : Serializable
 
 class PlantAdapter(private val plantList: List<Plant>, private val onItemClick: (Plant) -> Unit) :

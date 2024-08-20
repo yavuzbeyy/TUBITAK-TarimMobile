@@ -113,24 +113,23 @@ class GetCoordinatActivity : AppCompatActivity() {
 
                     val plantList = mutableListOf<Plant>()
 
-
                     for (i in 0 until dataArray.length()) {
                         val plant = dataArray.getJSONObject(i)
                         plantList.add(
                             Plant(
                                 name = plant.getString("ad"),
                                 photoKey = plant.optString("fotokey", null),
-                                description = plant.getString("aciklama")
+                                description = plant.getString("aciklama"),
+                                iklimAdi = plant.getString("iklimAdi"),
+                                iklimAciklama = plant.getString("iklimAciklama"),
+                                toprakAdi = plant.getString("toprakAdi"),
+                                toprakAciklama = plant.getString("toprakAciklama"),
+                                sulamaAdi = plant.getString("sulamaAdi"),
+                                sulamaAciklama = plant.getString("sulamaAciklama"),
+                                gubrelemeAdi = plant.getString("gubrelemeAdi"),
+                                gubrelemeAciklama = plant.getString("gubrelemeAciklama")
                             )
                         )
-
-
-                        val name = plant.getString("ad")
-                        val description = plant.getString("aciklama")
-                        val photoKey = plant.optString("fotokey", null) // Eğer fotokey yoksa null döner
-
-                        // Hata ayıklama için log ekleyin
-                        println("Plant: name=$name, photoKey=$photoKey, description=$description")
                     }
 
                     runOnUiThread {
@@ -148,7 +147,7 @@ class GetCoordinatActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+}
 
     private fun setupRecyclerView(plants: List<Plant>) {
         recyclerView.layoutManager = LinearLayoutManager(this)

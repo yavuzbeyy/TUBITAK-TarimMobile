@@ -22,8 +22,25 @@ class PlantDetailActivity : AppCompatActivity() {
         val plantImageView: ImageView = findViewById(R.id.plant_detail_image)
         val plantDescriptionTextView: TextView = findViewById(R.id.plant_detail_description)
 
+        val plantIklimAdi: TextView = findViewById(R.id.plant_detail_iklimAdi)
+        val plantIklimAciklama: TextView = findViewById(R.id.plant_detail_iklimAciklama)
+        val plantToprakAdi: TextView = findViewById(R.id.plant_detail_toprakAdi)
+        val plantToprakAciklama: TextView = findViewById(R.id.plant_detail_toprakAciklama)
+        val plantSulamaAdi: TextView = findViewById(R.id.plant_detail_sulamaAdi)
+        val plantSulamaAciklama: TextView = findViewById(R.id.plant_detail_sulamaAciklama)
+        val plantGubrelemeAdi: TextView = findViewById(R.id.plant_detail_gubrelemeAdi)
+        val plantGubrelemeAciklama: TextView = findViewById(R.id.plant_detail_gubrelemeAciklama)
+
         plantNameTextView.text = plant.name
         plantDescriptionTextView.text = plant.description
+        plantIklimAdi.text = "İklim Adı: ${plant.iklimAdi}"
+        plantIklimAciklama.text = "İklim Açıklama: ${plant.iklimAciklama}"
+        plantToprakAdi.text = "Toprak Adı: ${plant.toprakAdi}"
+        plantToprakAciklama.text = "Toprak Açıklama: ${plant.toprakAciklama}"
+        plantSulamaAdi.text = "Sulama Adı: ${plant.sulamaAdi}"
+        plantSulamaAciklama.text = "Sulama Açıklama: ${plant.sulamaAciklama}"
+        plantGubrelemeAdi.text = "Gübreleme Adı: ${plant.gubrelemeAdi}"
+        plantGubrelemeAciklama.text = "Gübreleme Açıklama: ${plant.gubrelemeAciklama}"
 
         // Resmi yükle
         thread {
