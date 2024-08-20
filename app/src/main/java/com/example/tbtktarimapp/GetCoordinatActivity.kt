@@ -90,7 +90,9 @@ class GetCoordinatActivity : AppCompatActivity() {
                 makeApiRequest(location.latitude, location.longitude)
                 locationTextView.text = "Enlem: ${location.latitude}, Boylam: ${location.longitude}"
             } else {
-                locationTextView.text = "Konum bilgisi alınamadı."
+                // Konum bilgii alınamadıysa ben rastgele konum giriyorum
+                makeApiRequest(30.2, 40.1)
+              //  locationTextView.text = "Konum bilgisi alınamadı."
             }
         }
     }
