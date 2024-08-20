@@ -1,17 +1,22 @@
 package com.example.tbtktarimapp
 
+import Plant
+import PlantAdapter
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import android.widget.Button
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import org.json.JSONObject
 import java.net.HttpURLConnection
@@ -27,7 +32,7 @@ import kotlin.concurrent.thread
 class GetCoordinatActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var locationTextView: TextView
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,7 +61,7 @@ class GetCoordinatActivity : AppCompatActivity() {
         }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        locationTextView = findViewById(R.id.textView)
+        recyclerView = findViewById(R.id.recyclerView)
 
         val getLocationButton: Button = findViewById(R.id.button_get_location)
         getLocationButton.setOnClickListener {
@@ -75,8 +80,6 @@ class GetCoordinatActivity : AppCompatActivity() {
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
             getLastKnownLocation()
-        } else {
-            locationTextView.text = "Konum izni verilmedi."
         }
     }
 
@@ -88,11 +91,9 @@ class GetCoordinatActivity : AppCompatActivity() {
             if (location != null) {
                 // API İsteği Burada yapabilirim.
                 makeApiRequest(location.latitude, location.longitude)
-                locationTextView.text = "Enlem: ${location.latitude}, Boylam: ${location.longitude}"
             } else {
                 // Konum bilgii alınamadıysa ben rastgele konum giriyorum
                 makeApiRequest(30.2, 40.1)
-              //  locationTextView.text = "Konum bilgisi alınamadı."
             }
         }
     }
@@ -110,33 +111,51 @@ class GetCoordinatActivity : AppCompatActivity() {
                     val jsonResponse = JSONObject(response)
                     val dataArray = jsonResponse.getJSONArray("data")
 
-                    val plantInfo = StringBuilder()
+                    val plantList = mutableListOf<Plant>()
+
+
                     for (i in 0 until dataArray.length()) {
                         val plant = dataArray.getJSONObject(i)
-                        plantInfo.append("Ad: ${plant.getString("ad")}\n")
-                        plantInfo.append("Açıklama: ${plant.getString("aciklama")}\n")
-                        plantInfo.append("İklim: ${plant.getString("iklimAdi")}\n")
-                        plantInfo.append("Toprak: ${plant.getString("toprakAdi")}\n")
-                        plantInfo.append("Sulama: ${plant.getString("sulamaAdi")}\n")
-                        plantInfo.append("Gübreleme: ${plant.getString("gubrelemeAdi")}\n\n")
+                        plantList.add(
+                            Plant(
+                                name = plant.getString("ad"),
+                                photoKey = plant.optString("fotokey", null),
+                                description = plant.getString("aciklama")
+                            )
+                        )
+
+
+                        val name = plant.getString("ad")
+                        val description = plant.getString("aciklama")
+                        val photoKey = plant.optString("fotokey", null) // Eğer fotokey yoksa null döner
+
+                        // Hata ayıklama için log ekleyin
+                        println("Plant: name=$name, photoKey=$photoKey, description=$description")
                     }
 
                     runOnUiThread {
-                        locationTextView.text = plantInfo.toString()
+                        setupRecyclerView(plantList)
                     }
                 } else {
                     runOnUiThread {
-                        locationTextView.text = "API isteği başarısız: $responseCode"
+                        // Hata durumunu yönet
                     }
                 }
                 connection.disconnect()
             } catch (e: Exception) {
                 runOnUiThread {
-                    locationTextView.text = "Hata: ${e.message}"
+                    // Hata durumunu yönet
                 }
             }
         }
     }
 
-
+    private fun setupRecyclerView(plants: List<Plant>) {
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = PlantAdapter(plants) { selectedPlant ->
+            val intent = Intent(this, PlantDetailActivity::class.java)
+            intent.putExtra("plant", selectedPlant)
+            startActivity(intent)
+        }
+    }
 }
