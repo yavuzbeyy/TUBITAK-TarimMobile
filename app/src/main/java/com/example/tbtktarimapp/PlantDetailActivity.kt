@@ -3,6 +3,7 @@ package com.example.tbtktarimapp
 import Plant
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageView
 import android.widget.TextView
@@ -61,6 +62,12 @@ class PlantDetailActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 // Hata durumunu yönet
             }
+        }
+
+        // Geri dönüş butonu işlevi
+        val backButton: Button = findViewById(R.id.button_back)
+        backButton.setOnClickListener {
+            finish()  // Bu, mevcut aktiviteyi kapatır ve bir önceki aktiviteye döner
         }
     }
 }

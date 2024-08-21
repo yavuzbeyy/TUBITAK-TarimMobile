@@ -126,6 +126,15 @@
                 android:textColor="@android:color/black"
                 android:padding="8dp"/>
 
+            <Button
+                android:id="@+id/button_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Geri Dön"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="16dp"
+                android:padding="8dp"/>
+
         </LinearLayout>
 
     </ScrollView>
