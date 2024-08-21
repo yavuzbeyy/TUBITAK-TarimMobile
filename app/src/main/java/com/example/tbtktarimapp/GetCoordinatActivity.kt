@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import org.json.JSONObject
 import java.net.HttpURLConnection
@@ -33,6 +34,7 @@ class GetCoordinatActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var recyclerView: RecyclerView
+    private lateinit var coordinatesTextView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,6 +64,7 @@ class GetCoordinatActivity : AppCompatActivity() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         recyclerView = findViewById(R.id.recyclerView)
+        coordinatesTextView = findViewById(R.id.textView_coordinates)
 
         val getLocationButton: Button = findViewById(R.id.button_get_location)
         getLocationButton.setOnClickListener {
@@ -89,10 +92,13 @@ class GetCoordinatActivity : AppCompatActivity() {
         }
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
             if (location != null) {
+                // Enlem ve Boylam bilgilerini güncelle
+                coordinatesTextView.text = "Enlem: ${location.latitude}, Boylam: ${location.longitude}"
+
                 // API İsteği Burada yapabilirim.
                 makeApiRequest(location.latitude, location.longitude)
             } else {
-                // Konum bilgii alınamadıysa ben rastgele konum giriyorum
+                // Konum bilgii alınamadıysa rastgele konum
                 makeApiRequest(30.2, 40.1)
             }
         }
@@ -147,7 +153,7 @@ class GetCoordinatActivity : AppCompatActivity() {
                 }
             }
         }
-}
+    }
 
     private fun setupRecyclerView(plants: List<Plant>) {
         recyclerView.layoutManager = LinearLayoutManager(this)
